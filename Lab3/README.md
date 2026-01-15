@@ -400,6 +400,3 @@ Remove Windows Defender Policies
   - Sub-technique: Disable or Modify tools
   - ID: T1562.001
 
-## 5. Phát hiện Remove Windows Defender Policies
-
--
