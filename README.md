@@ -16,3 +16,5 @@
 ---
 
 - [Lab 5](./Lab5/): Thiết lập hệ thống giám sát mạng bằng Suricata và Splunk để phát hiện các hành vi bất thường trong lưu lượng mạng
+
+- [Lab 6](./Lab6/): Điều tra hoạt động Powershell đáng ngờ trên Windows 
