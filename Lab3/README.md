@@ -126,12 +126,18 @@ Remove Windows Defender Policies
 
 # V. Phát hiện và giám sát các hành vi độc hại này bằng Splunk
 
-- Các `event ID` của sysmon
+- Các `event ID` hay `EventCode` của sysmon
   | Event ID | Ý nghĩa                               |
   | -------- | ------------------------------------- |
   | **12**   | Create / Delete **Registry Key**      |
   | **13**   | Set (Add / Modify) **Registry Value** |
   | **14**   | Delete **Registry Value**             |
+
+- Các `EventType` của sysmon
+  - `1`: Critical (Nghiêm trọng)
+  - `2`: Error (Lỗi)
+  - `3`: Warning (Cảnh báo)
+  - `4`: Information (Thông tin)
 
 ## 1. Phát hiện Persistence – Run
 
@@ -335,13 +341,13 @@ Remove Windows Defender Policies
   Details: DWORD (0x00000002)
   ```
   - Ý nghĩa `Start=2`
-  | Giá trị | Ý nghĩa                      |
-  | ------- | ---------------------------- |
-  | 0       | Boot                         |
-  | 1       | System                       |
-  | **`2`** | **`Automatic (Auto-start)`** |
-  | 3       | Manual                       |
-  | 4       | Disabled                     |
+    | Giá trị | Ý nghĩa                      |
+    | ------- | ---------------------------- |
+    | 0       | Boot                         |
+    | 1       | System                       |
+    | **`2`** | **`Automatic (Auto-start)`** |
+    | 3       | Manual                       |
+    | 4       | Disabled                     |
   `0x2` = **Service sẽ tự khởi động khi boot**
 - MAPPING MITRE ATT&CK
   - Tactic: Persistence

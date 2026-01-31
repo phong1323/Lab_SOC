@@ -184,4 +184,4 @@ sudo /opt/splunkforwarder/bin/splunk add monitor /var/log/fail2ban.log -sourcety
     src_ip | host | count
 - MAPPING MITRE ATT&CK
   - Credential Access: **T1110 Brute Force**
-  - [\*\*Lateral](https://attack.mitre.org/tactics/TA0008) Movement: T1021 Remote Service - SSH\*\*
+  - Lateral Movement: T1021 Remote Service - SSH
