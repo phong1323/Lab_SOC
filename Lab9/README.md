@@ -74,7 +74,7 @@ sudo auditctl -l #list các quy tắc
 
 ## 3. Cấu hình Splunk Universal Forwarder
 
-1. Tạo thêm index `auditd` trên Splunk
+1. Tạo thêm index `linux_audit` trên Splunk
 2. Sửa file cấu hình `inputs.conf` để Splunk Forwarder theo dõi log của auditd và gửi tới Splunk Server
 - Mở file `inputs.conf`
 
@@ -87,7 +87,7 @@ sudo nano /opt/splunkforwarder/etc/system/local/inputs.conf
 ```bash
 [monitor:///var/log/audit/audit.log]
 sourcetype = auditd
-index = linux_file_integrity
+index = linux_audit
 ```
 
 - Khởi động lại Spunk Forwarder
